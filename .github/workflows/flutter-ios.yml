@@ -13,65 +13,73 @@ jobs:
     - name: "1. Checkout code"
       uses: actions/checkout@v4
     
-    - name: "2. Setup Flutter"
+    - name: "2. Setup Flutter 3.27.4 (matching local)"
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: "3.16.0"
-        architecture: "x64"
+        flutter-version: "3.27.4"  # EXACTAMENTE la misma que usas localmente
+        cache: true
     
-    - name: "3. Show Flutter info"
+    - name: "3. Verify exact match"
       run: |
-        echo "=== Flutter Version ==="
+        echo "=== Expected (from your local machine) ==="
+        echo "Flutter 3.27.4 • channel stable"
+        echo "Tools • Dart 3.6.2 • DevTools 2.40.3"
+        echo ""
+        echo "=== Actual (in GitHub Actions) ==="
         flutter --version
         echo ""
-        echo "=== Flutter Doctor ==="
-        flutter doctor -v
+        
+        # Verificar que Dart sea 3.6.2
+        DART_VERSION=$(dart --version | grep -o "Dart SDK version: [0-9]\.[0-9]\.[0-9]" | cut -d" " -f4)
+        if [ "$DART_VERSION" = "3.6.2" ]; then
+          echo "✅ Dart version correct: $DART_VERSION"
+        else
+          echo "❌ Dart version mismatch: $DART_VERSION (expected 3.6.2)"
+        fi
     
     - name: "4. Get packages"
       run: flutter pub get
     
-    - name: "5. Check project structure"
+    - name: "5. Check/Setup iOS project"
       run: |
-        echo "=== Project Structure ==="
-        pwd
+        echo "=== Project Check ==="
         ls -la
-        echo ""
-        echo "=== Checking iOS folder ==="
-        if [ -d "ios" ]; then
-          echo "✅ iOS folder exists"
-          echo "Contents:"
-          ls -la ios/
-        else
-          echo "❌ No iOS folder found"
-        fi
-    
-    - name: "6. Create iOS if missing"
-      if: success()
-      run: |
+        
         if [ ! -d "ios" ]; then
           echo "Creating iOS project..."
-          flutter create --platforms=ios --org com.example.appdac .
+          flutter create --platforms=ios --org com.appdac .
+          echo "✅ iOS project created"
         else
-          echo "iOS project already exists"
+          echo "✅ iOS project already exists"
         fi
+        
+        echo ""
+        echo "=== iOS Structure ==="
+        ls -la ios/
     
-    - name: "7. Build for iOS Simulator"
-      if: success()
+    - name: "6. Build for iOS Simulator"
       run: |
         echo "Building for iOS simulator..."
         flutter build ios --simulator --debug
+        
+        echo ""
+        echo "=== Simulator Build Output ==="
+        find build/ios -name "*.app" -type f | head -5
     
-    - name: "8. Build for iOS Device (unsigned)"
-      if: success()
+    - name: "7. Build for iOS Device (unsigned)"
       run: |
         echo "Building for iOS device (unsigned)..."
         flutter build ios --release --no-codesign
-    
-    - name: "9. List generated files"
-      if: always()
-      run: |
-        echo "=== Build Output ==="
-        find build/ios -type f -name "*.app" 2>/dev/null || echo "No .app files generated"
+        
         echo ""
-        echo "=== Build Directory ==="
-        ls -la build/ios/ 2>/dev/null || echo "No build directory"
+        echo "=== Device Build Output ==="
+        find build/ios -name "*.app" -type f | head -5
+    
+    - name: "8. Upload build artifacts"
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-app-build
+        path: |
+          build/ios/
+        retention-days: 7
