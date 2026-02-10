@@ -1,0 +1,92 @@
+﻿name: "Build Flutter iOS"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: "1. Checkout code"
+      uses: actions/checkout@v4
+    
+    - name: "2. Setup Flutter"
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "stable"
+    
+    - name: "3. Show Flutter info"
+      run: |
+        echo "=== Flutter Version ==="
+        flutter --version
+        echo ""
+        echo "=== Flutter Doctor ==="
+        flutter doctor -v
+    
+    - name: "4. Get packages"
+      run: flutter pub get
+    
+    - name: "5. Check project structure"
+      run: |
+        echo "=== Project Structure ==="
+        pwd
+        ls -la
+        echo ""
+        echo "=== Checking iOS folder ==="
+        if [ -d "ios" ]; then
+          echo "✅ iOS folder exists"
+          echo "Contents:"
+          ls -la ios/
+        else
+          echo "❌ No iOS folder found"
+        fi
+    
+    - name: "6. Create iOS if missing"
+      if: success()
+      run: |
+        if [ ! -d "ios" ]; then
+          echo "Creating iOS project..."
+          # Primero, necesitamos saber el nombre de la app
+          APP_NAME=$(grep -E '^name:' pubspec.yaml | head -1 | awk '{print $2}' | tr -d "\r\n")
+          if [ -z "$APP_NAME" ]; then
+            APP_NAME="appdac"
+          fi
+          echo "App name: $APP_NAME"
+          flutter create --platforms=ios --org com.$APP_NAME .
+        else
+          echo "iOS project already exists"
+        fi
+    
+    - name: "7. Build for iOS Simulator"
+      if: success()
+      run: |
+        echo "Building for iOS simulator..."
+        flutter build ios --simulator --debug
+    
+    - name: "8. Build for iOS Device (unsigned)"
+      if: success()
+      run: |
+        echo "Building for iOS device (unsigned)..."
+        flutter build ios --release --no-codesign
+    
+    - name: "9. List generated files"
+      if: always()
+      run: |
+        echo "=== Build Output ==="
+        find build/ios -type f -name "*.app" 2>/dev/null || echo "No .app files generated"
+        echo ""
+        echo "=== Build Directory ==="
+        ls -la build/ios/ 2>/dev/null || echo "No build directory"
+    
+    - name: "10. Upload artifacts"
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-build-artifacts
+        path: |
+          build/ios/
+          ios/Runner.xcodeproj/
+        retention-days: 7
