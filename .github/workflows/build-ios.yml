@@ -1,4 +1,4 @@
-name: Build iOS
+name: Flutter iOS Build
 
 on:
   push:
@@ -6,56 +6,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-ios:
+  build:
     runs-on: macos-latest
     
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v4
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
+      id: flutter
       with:
-        flutter-version: 'stable'
+        flutter-version: '3.16.0'
+        cache: true
     
-    - name: Show Flutter info
+    - name: Verify Flutter installation
       run: |
-        flutter --version
-        echo "Flutter doctor:"
+        flutter config --no-analytics
         flutter doctor -v
     
-    - name: Install dependencies
+    - name: Get packages
       run: flutter pub get
     
-    - name: Setup iOS project
+    - name: Create iOS project if needed
       run: |
-        echo "Current directory:"
-        pwd
-        echo "Files in directory:"
-        ls -la
-        
-        # Crear iOS si no existe
         if [ ! -d "ios" ]; then
-          echo "Creating iOS project..."
-          flutter create --platforms=ios .
-        else
-          echo "iOS folder already exists"
+          echo "Creating iOS project structure..."
+          flutter create --platforms=ios --org com.yourcompany . --project-name appdac
         fi
     
-    - name: Build iOS Debug
+    - name: Build iOS (simulator)
       run: |
-        echo "Building iOS debug..."
-        flutter build ios --debug --no-codesign
+        flutter build ios --simulator --debug
     
-    - name: Build iOS Release
+    - name: List build outputs
       run: |
-        echo "Building iOS release..."
-        flutter build ios --release --no-codesign
+        find build/ios -type f -name "*.app" | head -10
+        du -sh build/ios/*
     
-    - name: Upload artifacts
+    - name: Archive build artifacts
+      if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: ios-build-output
+        name: flutter-ios-build
         path: |
-          build/ios/
-        if-no-files-found: warn
+          build/ios/iphonesimulator/
+          build/ios/Debug-iphonesimulator/
+        retention-days: 7
