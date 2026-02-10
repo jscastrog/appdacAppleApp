@@ -1,0 +1,145 @@
+import 'package:appdac/a_presentacion/dialogos_generales/dialogos.dart';
+import 'package:appdac/a_presentacion/tema/tema.dart';
+import 'package:appdac/b_control/sesion.dart';
+import 'package:appdac/b_control/util/metodos.dart';
+import 'package:appdac/c_integracion/login.dart';
+import 'package:appdac/config/app_config.dart';
+import 'package:appdac/generated/l10n.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    ControlSesion controlsesion = context.watch<ControlSesion>();
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40),
+
+              // Icono de balón de fútbol
+              Container(
+                margin: const EdgeInsets.only(bottom: 20.0),
+                child: Image.asset(
+                  'assets/img/logo.jpg',
+                  width: 100, // Ajusta el tamaño según necesites
+                  height: 100,
+                  fit: BoxFit.contain, // Ajusta cómo se adapta la imagen
+                ),
+              ),
+
+              // Texto "Bienvenido" en negrilla
+              Text(
+                S.of(context).label_bienvenido,
+                style: AppColors.textotituloverde,
+              ),
+
+              const SizedBox(height: 8),
+
+              const SizedBox(height: 40),
+
+              // Campo de texto para nombre de usuario
+              TextField(
+                controller: _usernameController,
+                decoration: DecoracionCampoVerde(
+                  letrero: S.of(context).label_usuario,
+                  hintLetrero: S.of(context).label_usuario,
+                  
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Campo de texto para contraseña
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: DecoracionCampoVerde(
+                  letrero: S.of(context).label_clave,
+                  hintLetrero: S.of(context).label_clave,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Botón para Iniciar Sesión
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    //controlsesion.login(context, 's.martinez', '12345');
+                    //controlsesion.login(context, 't.rincon', '12345');
+                    //controlsesion.login(context, 'ag.giraldo', '12345');
+                    controlsesion.login(context, _usernameController.text, _passwordController.text);
+                    
+                  },
+                  style: AppColors.botonverde,
+                  child: Text(
+                    S.of(context).label_boton_login,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Link "¿Olvidaste tu contraseña?"
+              TextButton(
+                onPressed: () async {
+                  String? usuario = await mostrarDialogoRecuperarContrasena(context);
+                  if (usuario != null) {
+                    await ClienteRecuperarContrasena().recuperarContrasena(usuario!);
+                    mostrarMensajeInferior(context, S.of(context).msj_token_enviado);
+                    mostrarDialogoNuevaContrasenaValidacion(context, usuario);
+                  }
+                },
+                child: Text(
+                  S.of(context).label_link_olvidaste_contrasena,
+                  style: TextStyle(
+                    color: AppColors.verde,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Link "Quiero Inscribirme"
+              TextButton(
+                onPressed: () async {
+                  await abrirNavegador(AppConfig.instance.parametros['urlinscripcion']);
+                },
+                child: Text(
+                  S.of(context).label_link_quiero_inscribirme,
+                  style: TextStyle(
+                    color: AppColors.verde,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

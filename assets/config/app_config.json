@@ -1,0 +1,14 @@
+{
+ 
+  "urlinscripcion":"https://imrd-cota.nextgonsas.com.co/",
+  "urllogin":"https://n8n.nextgonsas.com.co/webhook/auth/login",
+  "urlRecupContrasena":"https://n8n.nextgonsas.com.co/webhook/recuperar/contraseña",
+  "urlNuevaContrasena":"https://n8n.nextgonsas.com.co/webhook/nueva/contraseña",
+  "urlverProfesoresAdministrador":"https://n8n.nextgonsas.com.co/webhook/profesores/administrador",
+  "urlverDeportesEstudiante":"https://n8n.nextgonsas.com.co/webhook/estudiante/deporte",
+  "urlestudianteEnviarDocumentos":"https://n8n.nextgonsas.com.co/webhook/actualizar/documentos/estudante",
+  "urlestudianteVerAsistencia":"https://n8n.nextgonsas.com.co/webhook/visualizacion/asistencia/estudiante",
+  "urlestudianteVerComunicados":"https://n8n.nextgonsas.com.co/webhook/comunicados/estudiantes"
+  
+   
+}
