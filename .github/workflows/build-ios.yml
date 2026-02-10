@@ -1,0 +1,71 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Permite ejecutar manualmente
+
+jobs:
+  build-ios:
+    runs-on: macos-latest  # Usa máquina virtual con macOS
+    
+    steps:
+    # 1. Descargar el código
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    # 2. Configurar Flutter
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+        channel: 'stable'
+    
+    # 3. Mostrar información de Flutter
+    - name: Show Flutter info
+      run: |
+        flutter --version
+        flutter doctor -v
+    
+    # 4. Instalar dependencias
+    - name: Install dependencies
+      run: flutter pub get
+    
+    # 5. Configurar proyecto iOS
+    - name: Configure iOS project
+      run: |
+        # Crear archivos necesarios para iOS si no existen
+        if [ ! -d "ios" ]; then
+          flutter create --platforms=ios .
+        fi
+    
+    # 6. Build para iOS (Debug)
+    - name: Build iOS Debug
+      run: |
+        cd ios
+        pod install
+        cd ..
+        flutter build ios --debug --no-codesign
+    
+    # 7. Build para iOS (Release - sin firmar)
+    - name: Build iOS Release
+      run: |
+        # Configurar para desarrollo sin certificado
+        /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion en" ios/Runner/Info.plist
+        /usr/libexec/PlistBuddy -c "Set :CFBundleVersion 1.0.0" ios/Runner/Info.plist
+        
+        # Build sin firmar
+        flutter build ios --release --no-codesign --dart-define=CI=true
+        
+    # 8. Subir artefactos (opcional)
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ios-build
+        path: |
+          build/ios/iphoneos/*.app
+          build/ios/Release-iphoneos/
+        if-no-files-found: warn
+      continue-on-error: true
