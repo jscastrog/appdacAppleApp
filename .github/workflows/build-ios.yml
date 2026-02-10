@@ -1,4 +1,4 @@
-name: Flutter iOS Build Test
+name: Build iOS
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-test:
+  build-ios:
     runs-on: macos-latest
     
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
     
     - name: Setup Flutter
@@ -18,23 +18,44 @@ jobs:
       with:
         flutter-version: 'stable'
     
-    - name: Doctor
-      run: flutter doctor -v
+    - name: Show Flutter info
+      run: |
+        flutter --version
+        echo "Flutter doctor:"
+        flutter doctor -v
     
-    - name: Get packages
+    - name: Install dependencies
       run: flutter pub get
     
-    - name: Build iOS (simplified)
+    - name: Setup iOS project
       run: |
-        # Verificar estructura del proyecto
-        echo "Project structure:"
+        echo "Current directory:"
+        pwd
+        echo "Files in directory:"
         ls -la
         
         # Crear iOS si no existe
         if [ ! -d "ios" ]; then
           echo "Creating iOS project..."
-          flutter create --platforms=ios --project-name appdac .
+          flutter create --platforms=ios .
+        else
+          echo "iOS folder already exists"
         fi
-        
-        # Intentar build
-        flutter build ios --debug || echo "Build failed but continuing..."
+    
+    - name: Build iOS Debug
+      run: |
+        echo "Building iOS debug..."
+        flutter build ios --debug --no-codesign
+    
+    - name: Build iOS Release
+      run: |
+        echo "Building iOS release..."
+        flutter build ios --release --no-codesign
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-build-output
+        path: |
+          build/ios/
+        if-no-files-found: warn
