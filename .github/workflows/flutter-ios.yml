@@ -16,7 +16,8 @@ jobs:
     - name: "2. Setup Flutter"
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: "stable"
+        flutter-version: "3.16.0"
+        architecture: "x64"
     
     - name: "3. Show Flutter info"
       run: |
@@ -49,13 +50,7 @@ jobs:
       run: |
         if [ ! -d "ios" ]; then
           echo "Creating iOS project..."
-          # Primero, necesitamos saber el nombre de la app
-          APP_NAME=$(grep -E '^name:' pubspec.yaml | head -1 | awk '{print $2}' | tr -d "\r\n")
-          if [ -z "$APP_NAME" ]; then
-            APP_NAME="appdac"
-          fi
-          echo "App name: $APP_NAME"
-          flutter create --platforms=ios --org com.$APP_NAME .
+          flutter create --platforms=ios --org com.example.appdac .
         else
           echo "iOS project already exists"
         fi
@@ -80,13 +75,3 @@ jobs:
         echo ""
         echo "=== Build Directory ==="
         ls -la build/ios/ 2>/dev/null || echo "No build directory"
-    
-    - name: "10. Upload artifacts"
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: ios-build-artifacts
-        path: |
-          build/ios/
-          ios/Runner.xcodeproj/
-        retention-days: 7
