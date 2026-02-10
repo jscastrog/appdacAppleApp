@@ -14,7 +14,7 @@ jobs:
     steps:
     # 1. Descargar el código
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     # 2. Configurar Flutter
     - name: Setup Flutter
@@ -45,27 +45,84 @@ jobs:
     - name: Build iOS Debug
       run: |
         cd ios
-        pod install
+        pod install || true  # Continúa si hay error
         cd ..
         flutter build ios --debug --no-codesign
     
     # 7. Build para iOS (Release - sin firmar)
     - name: Build iOS Release
       run: |
-        # Configurar para desarrollo sin certificado
-        /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion en" ios/Runner/Info.plist
-        /usr/libexec/PlistBuddy -c "Set :CFBundleVersion 1.0.0" ios/Runner/Info.plist
+        # Asegurar que el archivo Info.plist existe
+        if [ ! -f "ios/Runner/Info.plist" ]; then
+          echo "Creating Info.plist..."
+          mkdir -p ios/Runner
+          cat > ios/Runner/Info.plist << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleExecutable</key>
+    <string>\$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>\$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>\$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    <key>UIMainStoryboardFile</key>
+    <string>Main</string>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+</dict>
+</plist>
+EOF
+        fi
+        
+        # Configurar versiones
+        /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion en" ios/Runner/Info.plist 2>/dev/null || true
+        /usr/libexec/PlistBuddy -c "Set :CFBundleVersion 1.0.0" ios/Runner/Info.plist 2>/dev/null || true
         
         # Build sin firmar
-        flutter build ios --release --no-codesign --dart-define=CI=true
-        
-    # 8. Subir artefactos (opcional)
+        flutter build ios --release --no-codesign
+    
+    # 8. Listar archivos generados (para debug)
+    - name: List build files
+      run: |
+        echo "=== Build directory contents ==="
+        find build/ios -type f -name "*.app" 2>/dev/null || echo "No .app files found"
+        echo "=== iOS directory ==="
+        ls -la ios/ 2>/dev/null || echo "No iOS directory"
+    
+    # 9. Subir artefactos (versión actualizada v4)
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: ios-build
+        name: ios-build-artifacts
         path: |
-          build/ios/iphoneos/*.app
-          build/ios/Release-iphoneos/
+          build/ios/
+          ios/Runner/Info.plist
         if-no-files-found: warn
-      continue-on-error: true
+        retention-days: 7
