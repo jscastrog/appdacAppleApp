@@ -30,6 +30,7 @@ class RespuestaLogin {
   final bool actualizacionDatos;
   final String? error;
   final int? statusCode;
+  final String? estadoDeRevision;
 
   RespuestaLogin({
     required this.ok,
@@ -39,6 +40,7 @@ class RespuestaLogin {
     required this.actualizacionDatos,
     this.error,
     this.statusCode,
+    this.estadoDeRevision
   });
 
   factory RespuestaLogin.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class RespuestaLogin {
       idUsuario: json['id_administrador'] ?? json['id_profesor'] ?? json['id_estudiante'] ?? json['id_metodologo'],
       nombre: json['nombre'] ?? '',
       actualizacionDatos: (json['Actualizacion de datos'] ?? 'false').toString().toLowerCase() == 'true',
+      estadoDeRevision: json['Estado de revision'] ?? '',
     );
   }
 

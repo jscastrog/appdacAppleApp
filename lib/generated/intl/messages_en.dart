@@ -49,6 +49,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_histasistencias": MessageLookupByLibrary.simpleMessage(
       "Attendance History",
     ),
+    "label_horario": MessageLookupByLibrary.simpleMessage("Schedules"),
+    "label_horarioexp": MessageLookupByLibrary.simpleMessage("Check schedule"),
     "label_ingrese_usuario": MessageLookupByLibrary.simpleMessage(
       "Please enter your username",
     ),
@@ -63,6 +65,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "label_mensaje": MessageLookupByLibrary.simpleMessage("Message:"),
     "label_metodologos": MessageLookupByLibrary.simpleMessage("Methodologists"),
+    "label_nohorario": MessageLookupByLibrary.simpleMessage(
+      "There is no schedule",
+    ),
+    "label_nohorarioexp": MessageLookupByLibrary.simpleMessage(
+      "Schedules to be determined",
+    ),
     "label_nueva_contrasena": MessageLookupByLibrary.simpleMessage(
       "New Password",
     ),
@@ -70,7 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirm Password",
     ),
     "label_nueva_contrasenaexp": MessageLookupByLibrary.simpleMessage(
-      "Enter the token you received and your new password",
+      "The token will be sent to your email address",
     ),
     "label_perfil_administrador": MessageLookupByLibrary.simpleMessage(
       "Administrator",
@@ -88,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_subdocspdf": MessageLookupByLibrary.simpleMessage(
       "Upload the following documents in PDF format",
     ),
+    "label_titmisdeportes": MessageLookupByLibrary.simpleMessage("My Sports"),
     "label_titulo": MessageLookupByLibrary.simpleMessage("Tittle:"),
     "label_tituloactudocs": MessageLookupByLibrary.simpleMessage(
       "update documents",

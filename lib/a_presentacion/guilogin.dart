@@ -1,5 +1,6 @@
 import 'package:appdac/a_presentacion/dialogos_generales/dialogos.dart';
 import 'package:appdac/a_presentacion/tema/tema.dart';
+import 'package:appdac/b_control/estudiantes.dart';
 import 'package:appdac/b_control/sesion.dart';
 import 'package:appdac/b_control/util/metodos.dart';
 import 'package:appdac/c_integracion/login.dart';
@@ -16,6 +17,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     ControlSesion controlsesion = context.watch<ControlSesion>();
 
     return Scaffold(
@@ -56,7 +58,6 @@ class LoginScreen extends StatelessWidget {
                 decoration: DecoracionCampoVerde(
                   letrero: S.of(context).label_usuario,
                   hintLetrero: S.of(context).label_usuario,
-                  
                 ),
               ),
 
@@ -80,11 +81,11 @@ class LoginScreen extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    //controlsesion.login(context, 's.martinez', '12345');
-                    //controlsesion.login(context, 't.rincon', '12345');
-                    //controlsesion.login(context, 'ag.giraldo', '12345');
+                    //controlsesion.login(context, 'ag.giraldo', '12345');//EST00001
+                    //controlsesion.login(context, 's.martinez', '12345');//EST00003
+                    //controlsesion.login(context, 'm.cifuentes', '12345');//EST00008
+
                     controlsesion.login(context, _usernameController.text, _passwordController.text);
-                    
                   },
                   style: AppColors.botonverde,
                   child: Text(

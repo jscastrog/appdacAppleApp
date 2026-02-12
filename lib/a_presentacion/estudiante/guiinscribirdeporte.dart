@@ -38,7 +38,6 @@ class InscribirDeporteScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
             ],
           ),
           content: _DialogContent(key: key),
@@ -48,15 +47,14 @@ class InscribirDeporteScreen extends StatelessWidget {
               child: Text(S.of(context).label_cancelar, style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-
               style: AppColors.botonverde,
-              onPressed: () async {
+              onPressed: ()  async {
                 // Obtener los deportes editados desde el estado
                 final deportesEditados = key.currentState?.deportesEditables;
                 if (await ControlInscribirDeportes.actualizarInscripcion(context, deportesEditados!)) {
-                  mostrarMensajeInferior(context, 'Inscripción exitosa');
+                  mostrarMensajeInferior(context, 'Inscripción exitosa, próximante te contactaremos para que selecciones tu talla de uniforme');
                 } else {
-                  mostrarMensajeInferior(context, 'Inscripción exitosa', colorFondo: Colors.red, colorFuente: Colors.yellow);
+                  mostrarMensajeInferior(context, 'inscripción no exitosa', colorFondo: Colors.red, colorFuente: Colors.yellow);
                 }
                 context.pop();
               },
@@ -261,7 +259,7 @@ class _DeporteCardItem extends StatelessWidget {
                       ? Icons.block
                       : Icons.sports_soccer,
               color: esDeshabilitado
-                  ?AppColors.verde
+                  ? AppColors.verde
                   : maximoAlcanzado
                       ? AppColors.gris
                       : AppColors.verde,
@@ -272,16 +270,19 @@ class _DeporteCardItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text(
                     deporte.nombreDeporte,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: esDeshabilitado ? FontWeight.bold : FontWeight.normal,
                       color: deshabilitado ? AppColors.gris : AppColors.verde,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: null, // Permite tantas líneas como necesite
+                    overflow: TextOverflow.visible, // Permite que el texto se salga si es necesario
+                    softWrap: true, // Permite dividir el texto en múltiples líneas
                   ),
+
                   SizedBox(height: 2),
                   if (esDeshabilitado)
                     Text(

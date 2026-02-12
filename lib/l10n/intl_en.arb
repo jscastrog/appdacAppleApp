@@ -37,11 +37,16 @@
   "label_seleccionar":"SELECT",
   "label_yainscrito":"REGISTERED",
   "label_seleccionados":"selected",
+  "label_titmisdeportes":"My Sports",
+  "label_horario":"Schedules",
+  "label_horarioexp":"Check schedule",
+  "label_nohorario":"There is no schedule",
+  "label_nohorarioexp":"Schedules to be determined",
 
   
   "label_nueva_contrasena":"New Password",
   "label_nueva_contrasenaconfirmar":"Confirm Password",
-  "label_nueva_contrasenaexp":"Enter the token you received and your new password",
+  "label_nueva_contrasenaexp":"The token will be sent to your email address",
   "label_token":"token",
  
   "msj_token_enviado":"A token has been sent to your associated email address",

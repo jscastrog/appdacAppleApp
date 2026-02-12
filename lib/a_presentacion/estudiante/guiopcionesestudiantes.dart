@@ -11,13 +11,10 @@ class OpcionesEstudianteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControlListaDeportes controllistadeportes = 
-        context.watch<ControlListaDeportes>();
-        ControlAsistencia controlasistencia = 
-        context.watch<ControlAsistencia>();
-        ControlComunicados controlcomunicados = 
-        context.watch<ControlComunicados>();
-    
+    ControlListaDeportes controllistadeportes = context.watch<ControlListaDeportes>();
+    ControlAsistencia controlasistencia = context.watch<ControlAsistencia>();
+    ControlComunicados controlcomunicados = context.watch<ControlComunicados>();
+
     return Scaffold(
       appBar: AppBar(
         title: SizedBox(
@@ -47,9 +44,9 @@ class OpcionesEstudianteScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: InkWell(
-                onTap: () async{
-                   await controlasistencia.cargarAsistencia(controllistadeportes.seleccionado!.idDeporte, ControlSesion.datosusuario!.idUsuario);
-                   context.push('/VerAsistenciaEstudiante');
+                onTap: () async {
+                  await controlasistencia.cargarAsistencia(controllistadeportes.seleccionado!.idDeporte, ControlSesion.datosusuario!.idUsuario);
+                  context.push('/VerAsistenciaEstudiante');
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
@@ -66,7 +63,7 @@ class OpcionesEstudianteScreen extends StatelessWidget {
                         child: const Icon(
                           Icons.checklist,
                           size: 32,
-                          color:AppColors.verde,
+                          color: AppColors.verde,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -105,9 +102,9 @@ class OpcionesEstudianteScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Card para Comunicados
             Card(
               color: AppColors.verde,
@@ -118,7 +115,7 @@ class OpcionesEstudianteScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () async {
                   await controlcomunicados.cargarComunicados(controllistadeportes.seleccionado!.idDeporte);
-                
+
                   context.push('/VerComunicadosEstudiante');
                 },
                 borderRadius: BorderRadius.circular(12),
@@ -175,10 +172,80 @@ class OpcionesEstudianteScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
+            const SizedBox(height: 20),
+
+            // Card para Comunicados
+            Card(
+              color: AppColors.verde,
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: InkWell(
+                onTap: () async {
+                  //await controlcomunicados.cargarComunicados(controllistadeportes.seleccionado!.idDeporte);
+
+                  context.push('/VerHorario');
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      // Icono de megáfono
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.blanco,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.campaign,
+                          size: 32,
+                          color: AppColors.verde,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      // Textos a la derecha del icono
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).label_horario,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.blanco,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              S.of(context).label_horarioexp,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.blanco,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Flecha indicadora (opcional)
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
             // Espacio para agregar más cards en el futuro
             const Spacer(),
-            
+
             // Puedes agregar más opciones aquí si es necesario
             /*
             const SizedBox(height: 20),

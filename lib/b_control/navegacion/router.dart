@@ -6,6 +6,7 @@ import 'package:appdac/a_presentacion/estudiante/guiasistencia.dart';
 import 'package:appdac/a_presentacion/estudiante/guicomunicados.dart';
 import 'package:appdac/a_presentacion/estudiante/guienviardocumentos.dart';
 import 'package:appdac/a_presentacion/estudiante/guiestudiante.dart';
+import 'package:appdac/a_presentacion/estudiante/guihorario.dart';
 import 'package:appdac/a_presentacion/estudiante/guiopcionesestudiantes.dart';
 import 'package:appdac/a_presentacion/guilogin.dart';
 import 'package:appdac/a_presentacion/metodologo/guimetodologo.dart';
@@ -61,6 +62,11 @@ final appRouter = GoRouter(
       path: '/VerComunicadosEstudiante',
       name: "VerComunicadosEstudiante",
       builder: (context, state) => ComunicadosScreen(),
+    ),
+    GoRoute(
+      path: '/VerHorario',
+      name: "VerHorario",
+      builder: (context, state) => HorarioScreen(),
     ),
   ],
 );

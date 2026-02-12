@@ -385,6 +385,51 @@ class S {
     );
   }
 
+  /// `Mis Deportes`
+  String get label_titmisdeportes {
+    return Intl.message(
+      'Mis Deportes',
+      name: 'label_titmisdeportes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Horarios`
+  String get label_horario {
+    return Intl.message('Horarios', name: 'label_horario', desc: '', args: []);
+  }
+
+  /// `Consultar horario`
+  String get label_horarioexp {
+    return Intl.message(
+      'Consultar horario',
+      name: 'label_horarioexp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No hay horario`
+  String get label_nohorario {
+    return Intl.message(
+      'No hay horario',
+      name: 'label_nohorario',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Horarios por definir`
+  String get label_nohorarioexp {
+    return Intl.message(
+      'Horarios por definir',
+      name: 'label_nohorarioexp',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Nueva Contraseña`
   String get label_nueva_contrasena {
     return Intl.message(
@@ -405,10 +450,10 @@ class S {
     );
   }
 
-  /// `Ingrese el token recibido y su nueva contraseña-`
+  /// `el Token se enviará a tu correo`
   String get label_nueva_contrasenaexp {
     return Intl.message(
-      'Ingrese el token recibido y su nueva contraseña-',
+      'el Token se enviará a tu correo',
       name: 'label_nueva_contrasenaexp',
       desc: '',
       args: [],

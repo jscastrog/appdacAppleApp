@@ -53,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_histasistencias": MessageLookupByLibrary.simpleMessage(
       "Historial de Asistencias",
     ),
+    "label_horario": MessageLookupByLibrary.simpleMessage("Horarios"),
+    "label_horarioexp": MessageLookupByLibrary.simpleMessage(
+      "Consultar horario",
+    ),
     "label_ingrese_usuario": MessageLookupByLibrary.simpleMessage(
       "Por favor ingrese su usuario",
     ),
@@ -67,6 +71,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "label_mensaje": MessageLookupByLibrary.simpleMessage("Mensaje:"),
     "label_metodologos": MessageLookupByLibrary.simpleMessage("Metodologos"),
+    "label_nohorario": MessageLookupByLibrary.simpleMessage("No hay horario"),
+    "label_nohorarioexp": MessageLookupByLibrary.simpleMessage(
+      "Horarios por definir",
+    ),
     "label_nueva_contrasena": MessageLookupByLibrary.simpleMessage(
       "Nueva Contraseña",
     ),
@@ -74,7 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirmar Contraseña",
     ),
     "label_nueva_contrasenaexp": MessageLookupByLibrary.simpleMessage(
-      "Ingrese el token recibido y su nueva contraseña-",
+      "el Token se enviará a tu correo",
     ),
     "label_perfil_administrador": MessageLookupByLibrary.simpleMessage(
       "Administrador",
@@ -93,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "label_selectpdf": MessageLookupByLibrary.simpleMessage("Seleccionar PDF"),
     "label_subdocspdf": MessageLookupByLibrary.simpleMessage(
       "Suba los siguientes documentos en formato PDF",
+    ),
+    "label_titmisdeportes": MessageLookupByLibrary.simpleMessage(
+      "Mis Deportes",
     ),
     "label_titulo": MessageLookupByLibrary.simpleMessage("Título:"),
     "label_tituloactudocs": MessageLookupByLibrary.simpleMessage(

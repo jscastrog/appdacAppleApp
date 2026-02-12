@@ -37,11 +37,16 @@
   "label_seleccionar":"SELECCIONAR",
   "label_yainscrito":"INSCRITO",
   "label_seleccionados":"seleccionados",
+  "label_titmisdeportes":"Mis Deportes",
+  "label_horario":"Horarios",
+  "label_horarioexp":"Consultar horario",
+  "label_nohorario":"No hay horario",
+  "label_nohorarioexp":"Horarios por definir",
   
   
   "label_nueva_contrasena":"Nueva Contraseña",
   "label_nueva_contrasenaconfirmar":"Confirmar Contraseña",
-  "label_nueva_contrasenaexp":"Ingrese el token recibido y su nueva contraseña-",
+  "label_nueva_contrasenaexp":"el Token se enviará a tu correo",
   "label_token":"token",
 
   "msj_token_enviado":"un token se ha enviado a su correo asociado",

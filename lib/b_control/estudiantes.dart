@@ -7,20 +7,24 @@ import 'package:appdac/config/log.dart';
 import 'package:flutter/material.dart';
 
 class ControlListaDeportes extends ChangeNotifier {
-  List<DeporteEstudiante> deportes = [];
+  static List<DeporteEstudiante> deportes = [];
   DeporteEstudiante? seleccionado;
-  bool recargado = false;
+  static bool recargado = false;
 
   void cargarDeportes(String idEstudiante) async {
+    print('cargarDeportes...');
     if ((deportes.isEmpty) && (!recargado)) {
       recargado = true;
       RespuestaDeportesEstudiante rdeportes = await ClienteEstudiantes().consultarDeportes(idEstudiante);
-      logear('-------------------------------------------');
-      logear('>>--${rdeportes.deportes}}');
-      logear('-------------------------------------------');
       deportes.addAll(rdeportes.deportes ?? []);
+      print('deportes cargados ${deportes.length}');
       notifyListeners();
     }
+  }
+
+  static void vaciarDeportes() {
+    deportes.clear();
+    recargado = false;
   }
 
   void seleccionarDeporte(DeporteEstudiante deporte) {
