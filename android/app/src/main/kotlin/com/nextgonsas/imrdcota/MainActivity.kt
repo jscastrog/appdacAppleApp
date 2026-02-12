@@ -1,4 +1,4 @@
-package com.example.appdac
+package com.nextgonsas.imrdcota
 
 import io.flutter.embedding.android.FlutterActivity
 
