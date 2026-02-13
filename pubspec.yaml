@@ -13,7 +13,7 @@ dependencies:
   # Internacionalización
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0  # Requerido para flutter_intl
+  intl: ^0.20.2  # Requerido para flutter_intl
   
   # Dependencias opcionales recomendadas para una app completa
   http: ^1.2.2          # Para llamadas API
